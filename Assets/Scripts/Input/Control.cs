@@ -94,6 +94,34 @@ public partial class @Control: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Jumping"",
+            ""id"": ""065916d3-ef8e-499b-b7a1-24f64c3f4913"",
+            ""actions"": [
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec05f682-f331-455a-ad5c-7d90e16fe04f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a6741788-4a57-4b33-822f-6bb21fe64684"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -107,6 +135,9 @@ public partial class @Control: IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
+        // Jumping
+        m_Jumping = asset.FindActionMap("Jumping", throwIfNotFound: true);
+        m_Jumping_Jump = m_Jumping.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -210,6 +241,52 @@ public partial class @Control: IInputActionCollection2, IDisposable
         }
     }
     public MovementActions @Movement => new MovementActions(this);
+
+    // Jumping
+    private readonly InputActionMap m_Jumping;
+    private List<IJumpingActions> m_JumpingActionsCallbackInterfaces = new List<IJumpingActions>();
+    private readonly InputAction m_Jumping_Jump;
+    public struct JumpingActions
+    {
+        private @Control m_Wrapper;
+        public JumpingActions(@Control wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Jump => m_Wrapper.m_Jumping_Jump;
+        public InputActionMap Get() { return m_Wrapper.m_Jumping; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(JumpingActions set) { return set.Get(); }
+        public void AddCallbacks(IJumpingActions instance)
+        {
+            if (instance == null || m_Wrapper.m_JumpingActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_JumpingActionsCallbackInterfaces.Add(instance);
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+        }
+
+        private void UnregisterCallbacks(IJumpingActions instance)
+        {
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+        }
+
+        public void RemoveCallbacks(IJumpingActions instance)
+        {
+            if (m_Wrapper.m_JumpingActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IJumpingActions instance)
+        {
+            foreach (var item in m_Wrapper.m_JumpingActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_JumpingActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public JumpingActions @Jumping => new JumpingActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -222,5 +299,9 @@ public partial class @Control: IInputActionCollection2, IDisposable
     public interface IMovementActions
     {
         void OnMove(InputAction.CallbackContext context);
+    }
+    public interface IJumpingActions
+    {
+        void OnJump(InputAction.CallbackContext context);
     }
 }
