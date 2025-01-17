@@ -92,6 +92,61 @@ public partial class @Control: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""ARROW"",
+                    ""id"": ""f49d588f-486e-4c2c-bf7f-99fe24264050"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""859806c5-0719-4766-8b3f-c374d6dbf671"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""da95c047-4564-42c8-96c0-98b35352f7cb"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""55462cc9-5fb4-4066-a5f0-d8da9c616db7"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""e5f0a4d3-6519-40be-98bb-20bd550be5f9"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -122,6 +177,34 @@ public partial class @Control: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Attack"",
+            ""id"": ""74d13688-f64c-420c-959e-6964032353a4"",
+            ""actions"": [
+                {
+                    ""name"": ""MeleeAttack"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0489771f-e767-43b4-8f3f-342d38cbe16b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ff943307-806e-4b99-8c90-a5ade3752623"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MeleeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -138,6 +221,9 @@ public partial class @Control: IInputActionCollection2, IDisposable
         // Jumping
         m_Jumping = asset.FindActionMap("Jumping", throwIfNotFound: true);
         m_Jumping_Jump = m_Jumping.FindAction("Jump", throwIfNotFound: true);
+        // Attack
+        m_Attack = asset.FindActionMap("Attack", throwIfNotFound: true);
+        m_Attack_MeleeAttack = m_Attack.FindAction("MeleeAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -287,6 +373,52 @@ public partial class @Control: IInputActionCollection2, IDisposable
         }
     }
     public JumpingActions @Jumping => new JumpingActions(this);
+
+    // Attack
+    private readonly InputActionMap m_Attack;
+    private List<IAttackActions> m_AttackActionsCallbackInterfaces = new List<IAttackActions>();
+    private readonly InputAction m_Attack_MeleeAttack;
+    public struct AttackActions
+    {
+        private @Control m_Wrapper;
+        public AttackActions(@Control wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MeleeAttack => m_Wrapper.m_Attack_MeleeAttack;
+        public InputActionMap Get() { return m_Wrapper.m_Attack; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(AttackActions set) { return set.Get(); }
+        public void AddCallbacks(IAttackActions instance)
+        {
+            if (instance == null || m_Wrapper.m_AttackActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_AttackActionsCallbackInterfaces.Add(instance);
+            @MeleeAttack.started += instance.OnMeleeAttack;
+            @MeleeAttack.performed += instance.OnMeleeAttack;
+            @MeleeAttack.canceled += instance.OnMeleeAttack;
+        }
+
+        private void UnregisterCallbacks(IAttackActions instance)
+        {
+            @MeleeAttack.started -= instance.OnMeleeAttack;
+            @MeleeAttack.performed -= instance.OnMeleeAttack;
+            @MeleeAttack.canceled -= instance.OnMeleeAttack;
+        }
+
+        public void RemoveCallbacks(IAttackActions instance)
+        {
+            if (m_Wrapper.m_AttackActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IAttackActions instance)
+        {
+            foreach (var item in m_Wrapper.m_AttackActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_AttackActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public AttackActions @Attack => new AttackActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -303,5 +435,9 @@ public partial class @Control: IInputActionCollection2, IDisposable
     public interface IJumpingActions
     {
         void OnJump(InputAction.CallbackContext context);
+    }
+    public interface IAttackActions
+    {
+        void OnMeleeAttack(InputAction.CallbackContext context);
     }
 }
