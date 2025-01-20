@@ -105,7 +105,7 @@ public class Player : MonoBehaviour
 
         // 플레이어의 대점프
 
-        if (InputUser.Instance.control.Jumping.Jump.WasPressedThisFrame())
+        if (InputUser.Instance.control.Jumping.Jump.IsPressed())
         {
             if (jumpTimeCounter > 0 && isJumping) 
             {
