@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
+
+[RequireComponent(typeof(CinemachineImpulseSource))]
 
 public class EnemyHP : MonoBehaviour, Idamagable
 {
@@ -9,15 +12,20 @@ public class EnemyHP : MonoBehaviour, Idamagable
     [field: SerializeField] public int MaxHp { get; set; } = 3;
     public bool HasTakenDamage { get; set ; } // true 일때 어떤상황으로 정의할지
 
+    private CinemachineImpulseSource _impulseSource;
+    [SerializeField] private ScreenShakeSO profile;
+
     private void Start()
     {
         CurrentHp = MaxHp;
+        _impulseSource=GetComponent<CinemachineImpulseSource>();
     }
 
     public void Damage(int amount)
     {
         HasTakenDamage = true;
         CurrentHp -= amount;
+        CameraShakeManager.Instance.CameraShakeFromProfile(_impulseSource, profile);
         Die();
     }
 
