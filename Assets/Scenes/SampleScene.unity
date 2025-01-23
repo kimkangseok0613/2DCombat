@@ -156,7 +156,7 @@ RectTransform:
   m_Father: {fileID: 715045879}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1103,7 +1103,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.3416944, y: -2.5611398, z: -10}
+  m_LocalPosition: {x: -8.38, y: -2.56, z: -10}
   m_LocalScale: {x: 2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1161,7 +1161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &643187931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6679,7 +6679,7 @@ RectTransform:
   m_Father: {fileID: 1826706306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6754,7 +6754,7 @@ RectTransform:
   m_Father: {fileID: 874409643}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6869,6 +6869,7 @@ MonoBehaviour:
   profile: {fileID: 11400000, guid: 02ffba4ab6baa3f469757bafb6d3260b, type: 2}
   damageClip: {fileID: 0}
   HurtClipName: hurt
+  _damageParticle: {fileID: 0}
 --- !u!61 &1067382711
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7284,7 +7285,7 @@ RectTransform:
   m_Father: {fileID: 1065778706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7408,6 +7409,7 @@ MonoBehaviour:
   profile: {fileID: 11400000, guid: f6dc11b6b2d897f408445ba54c2dc711, type: 2}
   damageClip: {fileID: 0}
   HurtClipName: hurt
+  _damageParticle: {fileID: 0}
 --- !u!61 &1394543048
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8001,7 +8003,7 @@ RectTransform:
   m_Father: {fileID: 358225520}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8192,6 +8194,7 @@ MonoBehaviour:
   profile: {fileID: 11400000, guid: c904958c69cf0ee4b988e0774b55d008, type: 2}
   damageClip: {fileID: 8300000, guid: 97c82ba827a687d499ac867fadced0b1, type: 3}
   HurtClipName: hurt
+  _damageParticle: {fileID: 6484876326325305914, guid: 319ed00b65ef10b48b4d2a29744e56ab, type: 3}
 --- !u!114 &1598598374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8358,7 +8361,7 @@ RectTransform:
   m_Father: {fileID: 1599624523}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

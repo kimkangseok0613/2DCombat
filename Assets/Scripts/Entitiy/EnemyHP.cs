@@ -18,6 +18,8 @@ public class EnemyHP : MonoBehaviour, Idamagable
     [SerializeField] private AudioClip damageClip;
     public string HurtClipName;
 
+    [SerializeField] private ParticleSystem _damageParticle;
+
 
     private void Start()
     {
@@ -26,7 +28,7 @@ public class EnemyHP : MonoBehaviour, Idamagable
        
     }
 
-    public void Damage(int amount)
+    public void Damage(int amount, Vector2 attackDirection)
     {
         HasTakenDamage = true;
         CurrentHp -= amount;
@@ -34,7 +36,10 @@ public class EnemyHP : MonoBehaviour, Idamagable
         // Sound
 
         PlayRandomDamageSound();
-        
+
+        // Effect
+        SpawnDamageParticle(attackDirection);         
+                              
         Die();
     }
     public void PlayRandomDamageSound()
@@ -52,6 +57,17 @@ public class EnemyHP : MonoBehaviour, Idamagable
             // gameObject.SetActive(false); // Enemy Á×À¸¸é ºñÈ°¼ºÈ­µÊ
             Destroy(gameObject); // Enemy Á×À¸¸é »ç¶óÁü
         }
+    }
+    private void SpawnDamageParticle(Vector2 attackDirection) // Particle
+    {
+        if (_damageParticle == null)
+        {
+            return;
+        }
+
+        Quaternion spawnRotation = Quaternion.FromToRotation(Vector2.right, -attackDirection);
+
+        Instantiate(_damageParticle, transform.position, spawnRotation);
     }
 
 }

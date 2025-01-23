@@ -46,7 +46,7 @@ public class PlayerMeleeAttack : MonoBehaviour
 
             if (enemyHP != null)
             {
-                enemyHP.Damage(damageAmount);
+                enemyHP.Damage(damageAmount, transform.right);
             }
         }
     }
@@ -65,7 +65,7 @@ public class PlayerMeleeAttack : MonoBehaviour
                                 
                 if (enemyHP != null&& !enemyHP.HasTakenDamage)
                 {
-                    enemyHP.Damage(damageAmount);
+                    enemyHP.Damage(damageAmount, transform.right);
                     idamagables.Add(enemyHP);
                 }
             }

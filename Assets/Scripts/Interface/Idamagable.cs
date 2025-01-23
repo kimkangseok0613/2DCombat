@@ -8,7 +8,7 @@ public interface Idamagable
     public int CurrentHp { get; set; }
     public int MaxHp { get; set; }
 
-    public void Damage(int amount);
+    public void Damage(int amount, Vector2 direction);
 
     public void Die();
 }
